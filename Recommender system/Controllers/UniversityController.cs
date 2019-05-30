@@ -1,22 +1,22 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Recommender_system.Service;
-using RecommenderSystem.Models.Repositories;
+using Recommender_system.Models.Repositories;
+using Recommender_system.Models.Repository;
 
 namespace Recommender_system.Controllers
 {
-    public class UniversityController:Controller
+    public class UniversityController : Controller
     {
-        private readonly UniversityService _universityService;
+        private readonly RecommenderSystemContextRepository _universityService;
 
-        public UniversityController(UniversityService universityService)
+        public UniversityController(RecommenderSystemContextRepository universityService)
         {
             _universityService = universityService;
         }
 
         public async Task<ActionResult> Index()
         {
-            var university = await _universityService.GetStudentsAsync();
+            var university = await _universityService.GetUniversityAsync();
             return View(university);
         }
 
@@ -34,7 +34,5 @@ namespace Recommender_system.Controllers
         {
             return View();
         }
-
-
     }
 }

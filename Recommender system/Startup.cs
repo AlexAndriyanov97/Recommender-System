@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Recommender_system.Models;
 using Recommender_system.Models.Repositories;
+using Recommender_system.Models.Repository;
 
 namespace Recommender_system
 {
@@ -31,10 +34,13 @@ namespace Recommender_system
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+            
+            var connection = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<RecommenderSystemContext>(options => options.UseNpgsql(connection));
 
+            services.AddScoped<RecommenderSystemContextRepository>();
             
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddSingleton<RecommenderSystemContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

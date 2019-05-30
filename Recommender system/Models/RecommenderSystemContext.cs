@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Recommender_system.Models.Repositories
 {
@@ -15,6 +16,6 @@ namespace Recommender_system.Models.Repositories
         public RecommenderSystemContext(DbContextOptions options) : base(options)
         {
         }
-        
+
     }
 }

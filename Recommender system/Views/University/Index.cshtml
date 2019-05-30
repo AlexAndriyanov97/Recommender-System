@@ -1,0 +1,43 @@
+@model IEnumerable<Recommender_system.Models.University>
+
+@{
+    ViewBag.Title = "University";
+}
+
+<h2>Университеты</h2>
+
+<p>
+    <a class="btn btn-default btn-primary btn-success" asp-controller="University"></a>
+</p>
+<table>
+    <tr>
+        <th>
+            Id
+        </th>
+        <th>
+            @Html.DisplayNameFor(university => university.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(university => university.City)
+        </th>
+        <th>
+            @Html.DisplayNameFor(university => university.Description)
+        </th>
+    </tr>
+    @foreach(var university in Model)
+    {   <tr>
+            <th>
+                @Html.DisplayText(university.Id.ToString())
+            </th>
+            <th>
+                @Html.DisplayText(university.Name)
+            </th>
+            <th>
+                @Html.DisplayText(university.City)
+            </th>
+            <th>
+                @Html.DisplayText(university.Description)
+            </th>
+        </tr>
+    }
+</table>
