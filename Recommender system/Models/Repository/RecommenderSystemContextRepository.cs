@@ -49,24 +49,6 @@ namespace Recommender_system.Models.Repository
             using (var dbContext = new RecommenderSystemContext(_options))
             {
                 result = dbContext.Universities.ToList();
-                foreach (var university in result)
-                {
-                    foreach (var faculty in dbContext.Faculties)
-                    {
-                        if (faculty.IdUniversity == university.Id)
-                        {
-                            university.Faculties.Add(faculty);
-                        }
-
-                        foreach (var passingPoint in dbContext.PassingPoints)
-                        {
-                            if (passingPoint.IdFaculty == faculty.Id)
-                            {
-                                faculty.PassingPoints.Add(passingPoint);
-                            }
-                        }
-                    }
-                }
 
                 dbContext.SaveChanges();
             }
