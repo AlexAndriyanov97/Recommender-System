@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Internal;
 using Recommender_system.Models.Repositories;
 
 namespace Recommender_system.Models.Repository
@@ -47,7 +48,6 @@ namespace Recommender_system.Models.Repository
             var result = new List<University>();
             using (var dbContext = new RecommenderSystemContext(_options))
             {
-                
                 result = dbContext.Universities.ToList();
                 foreach (var university in result)
                 {
@@ -67,9 +67,10 @@ namespace Recommender_system.Models.Repository
                         }
                     }
                 }
+
                 dbContext.SaveChanges();
             }
-            
+
 
             return result;
         }
@@ -96,6 +97,40 @@ namespace Recommender_system.Models.Repository
             }
 
             return university;
+        }
+
+        public List<Faculty> FindUniversity(TypeOfSubject typeOfFirstSubject,
+            TypeOfSubject typeOfSecondSubject, TypeOfSubject typeOfThirdSubject, int numberOfFirstSubject,
+            int numberOfSecondSubject, int numberOfThirdSubject)
+        {
+            var result = new List<Faculty>();
+
+            using (var dbContext = new RecommenderSystemContext(_options))
+            {
+                var universities = dbContext.Universities;
+                foreach (var university in universities)
+                {
+                    foreach (var faculty in university.Faculties)
+                    {
+                        if (faculty.PassingPoints.Any(x => x.TypeOfSubject == typeOfFirstSubject) &&
+                            faculty.PassingPoints.Any(x => x.TypeOfSubject == typeOfSecondSubject) &&
+                            faculty.PassingPoints.Any(x => x.TypeOfSubject == typeOfThirdSubject))
+                        {
+                            if (faculty.PassingPoints.FirstOrDefault(x => x.TypeOfSubject == typeOfFirstSubject)
+                                    .MinPoint <= numberOfFirstSubject &&
+                                faculty.PassingPoints.FirstOrDefault(x => x.TypeOfSubject == typeOfSecondSubject)
+                                    .MinPoint <= numberOfSecondSubject &&
+                                faculty.PassingPoints.FirstOrDefault(x => x.TypeOfSubject == typeOfThirdSubject)
+                                    .MinPoint <= numberOfThirdSubject)
+                            {
+                                result.Add(faculty);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }

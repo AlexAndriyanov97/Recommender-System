@@ -4,8 +4,47 @@
     ViewBag.Title = "University";
 }
 
-<h2>Университеты</h2>
-
+<table>
+    @using (Html.BeginForm("FindUniversity", "University", FormMethod.Post))
+    {
+        <th>
+            <label>Выберите 1 предмет</label>
+            <br/>
+            @Html.DropDownList("typeOfFirstSubject", Html.GetEnumSelectList(typeof(TypeOfSubject)))
+            <p>
+                <label>Количество баллов</label><br/>
+                @Html.TextBox("numberOfFirstSubject", "", new {type = "number"})
+            </p>
+            <br/>
+            <p>
+        </th>
+        <th>
+            <label>Выберите 2 предмет</label>
+            <br/>
+            @Html.DropDownList("typeOfSecondSubject", Html.GetEnumSelectList(typeof(TypeOfSubject)))
+            <p>
+                <label>Количество баллов</label><br/>
+                @Html.TextBox("numberOfSecondSubject", "", new {type = "number"})
+            </p>
+            <br/>
+            <p>
+        </th>
+        <th>
+            <label>Выберите 3 предмет</label>
+            <br/>
+            @Html.DropDownList("typeOfThirdSubject", Html.GetEnumSelectList(typeof(TypeOfSubject)))
+            <p>
+                <label>Количество баллов</label><br/>
+                @Html.TextBox("numberOfThirdSubject", "", new {type = "number"})
+            </p>
+            <br/>
+            <p>
+        </th>
+        <th>
+            <input type="submit" value="Подобрать"/>
+        </th>
+    }
+</table>
 <p>
     <a class="btn btn-default btn-primary btn-success" asp-controller="University" asp-action="AddUniversity">AddUniversity</a>
 </p>
