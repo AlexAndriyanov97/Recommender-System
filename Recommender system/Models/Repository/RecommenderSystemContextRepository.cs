@@ -15,43 +15,6 @@ namespace Recommender_system.Models.Repository
         public RecommenderSystemContextRepository(DbContextOptions options)
         {
             _options = options;
-            /*
-
-            var university = new University()
-            {
-                Name = "Nsu",
-                Description = "hell",
-                City = "Novosibirsk",
-            };
-            var faculty = new Faculty()
-            {
-                IdUniversity = university.Id,
-                University = university,
-                Name = "FIT",
-                Tag = "FIT",
-                NumberOfPoints = 200,
-                IsHaveBudgetPlace = true,
-                IsHavePaidPlace = true,
-                IsHaveIntramuralForm = true,
-                IsHaveExtramuralForm = false
-            };
-            var passingPoint = new PassingPoints()
-            {
-                Faculty = faculty,
-                IdFaculty = faculty.Id,
-                MinPoint = "200"
-            };
-
-
-            using (var dbContext = new RecommenderSystemContext(options))
-            {
-                dbContext.Universities.Add(university);
-                dbContext.Faculties.Add(faculty);
-                dbContext.PassingPoints.Add(passingPoint);
-
-                dbContext.SaveChanges();
-
-            }*/
         }
 
 
@@ -79,13 +42,34 @@ namespace Recommender_system.Models.Repository
         }
 
 
-        public async Task<IEnumerable<University>> GetUniversityAsync()
+        public IEnumerable<University> GetUniversityAsync()
         {
             var result = new List<University>();
             using (var dbContext = new RecommenderSystemContext(_options))
             {
+                
                 result = dbContext.Universities.ToList();
+                foreach (var university in result)
+                {
+                    foreach (var faculty in dbContext.Faculties)
+                    {
+                        if (faculty.IdUniversity == university.Id)
+                        {
+                            university.Faculties.Add(faculty);
+                        }
+
+                        foreach (var passingPoint in dbContext.PassingPoints)
+                        {
+                            if (passingPoint.IdFaculty == faculty.Id)
+                            {
+                                faculty.PassingPoints.Add(passingPoint);
+                            }
+                        }
+                    }
+                }
+                dbContext.SaveChanges();
             }
+            
 
             return result;
         }

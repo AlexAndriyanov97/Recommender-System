@@ -7,13 +7,10 @@
 <h2>Университеты</h2>
 
 <p>
-    <a class="btn btn-default btn-primary btn-success" asp-controller="University"></a>
+    <a class="btn btn-default btn-primary btn-success" asp-controller="University" asp-action="AddUniversity">AddUniversity</a>
 </p>
-<table>
+<table border="1" cellpadding="6">
     <tr>
-        <th>
-            Id
-        </th>
         <th>
             @Html.DisplayNameFor(university => university.Name)
         </th>
@@ -23,20 +20,45 @@
         <th>
             @Html.DisplayNameFor(university => university.Description)
         </th>
+        <th>
+            @Html.DisplayNameFor(university => university.Faculties)
+        </th>
+        <th>
+            @Html.DisplayNameFor(university => university.Faculties.GetEnumerator().Current.NumberOfPoints)
+        </th>
     </tr>
-    @foreach(var university in Model)
-    {   <tr>
+    @foreach (var university in Model)
+    {
+        <tr>
+            <td>
+                @university.Name
+            </td>
+            <td>
+                @university.City
+            </td>
+            <td>
+                @university.Description
+            </td>
+
+            <td>
+                @foreach (var faculty in university.Faculties)
+                {
+                    <p>@faculty.Name</p>
+                    <hr>
+                }
+            </td>
             <th>
-                @Html.DisplayText(university.Id.ToString())
+                @foreach (var faculty in university.Faculties)
+                {
+                    <p>@faculty.NumberOfPoints</p>
+                    <hr>
+                }
             </th>
             <th>
-                @Html.DisplayText(university.Name)
-            </th>
-            <th>
-                @Html.DisplayText(university.City)
-            </th>
-            <th>
-                @Html.DisplayText(university.Description)
+                <p>
+                    <a class="btn btn-default btn-primary btn-danger" asp-controller="University" asp-action="DeleteUniversity" asp-route-id=@university.Id>Delete</a>
+                    <a class="btn btn-default btn-primary btn-danger" asp-controller="University" asp-action="EditUniversity" asp-route-id=@university>Edit</a>
+                </p>
             </th>
         </tr>
     }

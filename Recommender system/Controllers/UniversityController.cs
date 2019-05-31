@@ -14,9 +14,9 @@ namespace Recommender_system.Controllers
             _universityService = universityService;
         }
 
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
-            var university = await _universityService.GetUniversityAsync();
+            var university =  _universityService.GetUniversityAsync();
             return View(university);
         }
 
@@ -30,9 +30,10 @@ namespace Recommender_system.Controllers
             return View();
         }
 
-        public ActionResult DeleteUniversity()
+        public async Task<ActionResult> DeleteUniversity(int id)
         {
-            return View();
+            await _universityService.DeleteUniversityAsync(id);
+            return View("Index");
         }
     }
 }
